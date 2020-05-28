@@ -6,6 +6,7 @@ import math
 import pandas as pd
 import matplotlib.pyplot as plt
 from tabulate import tabulate
+import numpy as np
 from nltk import ngrams
 from nltk.tokenize import RegexpTokenizer
 from collections import Counter
@@ -43,7 +44,7 @@ def c_zipf_distribution(file_name, alpha):
 		tokenizer = RegexpTokenizer(r'\w+')
 		obj_1 = tokenizer.tokenize(assign_1)
 		x = Counter(obj_1)
-		list_tokens = sorted(x, key=x.get)
+		list_tokens = sorted(x, key=x.get, reverse= True)
 		for index, val in enumerate(list_tokens, start=1):
 			P_word = x[val]/len(obj_1)
 			c += P_word*((index)**alpha)
@@ -80,17 +81,29 @@ def exercise_4_b(file_1, file_2, file_3):
 		z_scores_doc1 = z_scores(obj_1, obj_2, obj_3, obj_1)
 		z_scores_doc2 = z_scores(obj_1, obj_2, obj_3, obj_2)
 		z_scores_doc3 = z_scores(obj_1, obj_2, obj_3, obj_3)
-		#z_score_1 = [((x[word]/len(obj_1)) - ((x[word]/len(obj_1) + y[word]/len(obj_2) + z[word]/len(obj_3))/3))/ ]
-		#print(z_scores_doc1[0:10])
-		data = {file_1: z_scores_doc1[0:50], file_2: z_scores_doc2[0:50], file_3: z_scores_doc3[0:50]}
-		df = pd.DataFrame(data)
-		df.plot(kind='bar')
+		File_1_2 = sum(abs(x1 - x2) for (x1, x2) in zip(z_scores_doc1, z_scores_doc2))
+		File_2_3 = sum(abs(x1 - x2) for (x1, x2) in zip(z_scores_doc2, z_scores_doc3))
+		File_1_3 = sum(abs(x1 - x2) for (x1, x2) in zip(z_scores_doc1, z_scores_doc3))
+
+		print(tabulate([['Delta_(bronte; austen)', File_1_2], ['Delta_(austen;disputed)', File_2_3],
+			['Delta_(bronte;disputed)', File_1_3]], headers=["Terms", "Values"]))
+		
+
+		X = np.arange(50)
+		Y = np.arange(60,110)
+		Z = np.arange(120,170)
+		plt.bar(X, z_scores_doc1[0:50], color = 'b', label= file_1)
+		plt.bar(Y, z_scores_doc2[0:50], color = 'g', label= file_2)
+		plt.bar(Z, z_scores_doc3[0:50], color = 'r', label= file_3)
+		plt.legend(loc="upper left")
 		plt.show()
 
 
 def exercise_2():
 	c_zipf_distribution("raven.txt", 1)
 	c_zipf_distribution("gullivers-travels.txt", 1)
+	
+	
 
 def exercise_3():
 	descriptive_statistics("raven.txt")
@@ -109,4 +122,4 @@ def exercise_4_a():
 #exercise_2()
 #print("\n")
 #exercise_3()
-exercise_4_b("austen.txt", "bronte.txt","disputed.txt")
+#exercise_4_b("austen.txt", "bronte.txt","disputed.txt")
