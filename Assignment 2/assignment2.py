@@ -4,10 +4,44 @@ import nltk
 import sys
 import math
 import jsonlines
+import pandas as pd 
+import numpy as np 
 from nltk import ngrams
+from nltk import pos_tag
+from nltk.tokenize import word_tokenize
 from collections import Counter
 from collections import defaultdict
 from nltk.tokenize import RegexpTokenizer
+
+
+def exercise_1():
+	# Most of the code comes from
+	# https://www.nltk.org/book/ch05.html
+	# Aparently by default uses treebank that is the Penn treebank tag sistem, woudl be nice to print the list of tags types for each system
+	# https://www.nltk.org/_modules/nltk/tag.html
+	p = ["It is sunny throughout the year.", "Telling good jokes is an art that comes naturally to some people, but for others it takes practice and hard work.",
+     "Research on adult-learned second language(L2) has provided considerable insight into the neurocognitive mechanisms underlying the learning and processing of L2 grammar."]
+	tokens = [word_tokenize(i) for i in p]
+	peenTreebank = [pos_tag(i) for i in tokens]
+	universal = [pos_tag(i, tagset='universal', lang="eng") for i in tokens]
+	print(peenTreebank[0][0])
+	for x in range(len(peenTreebank)):
+		for y in range(len(peenTreebank[x])):
+			print(peenTreebank[x][y][0],"|",universal[x][y][1],"|",peenTreebank[x][y][1])
+
+def language_model():
+	with open("main_text_file.txt", encoding="utf8") as d1:
+		my_dict = defaultdict(lambda : 0)
+		my_3grams_count = defaultdict(lambda : 0)
+		assign_1 = d1.read().lower()
+		assign_1 = assign_1.replace('@','')
+		assign_1 = assign_1.replace('<p>','')
+		obj_1 = assign_1.split()
+		my_2_grams = ngrams(obj_1, 2)
+		count_2grams = Counter(my_2_grams)
+		my_3_grams = ngrams(obj_1, 3)
+		count_3grams = Counter(my_3_grams)
+		print(len(count_3grams))
 
 
 def merge_files(list_of_files):
@@ -76,15 +110,18 @@ def using_lang_model(sentence_):
 		sent_3grams = ngrams(sent.split(), 3)
 		prob_ = 0
 		for each_gram in sent_3grams:
-			print((c_3_1[each_gram] + c_3_2[each_gram]),c_2[each_gram[:2]])
+			#print((c_3_1[each_gram] + c_3_2[each_gram]),c_2[each_gram[:2]])
 			prob_ += math.log((c_3_1[each_gram] + c_3_2[each_gram])/c_2[each_gram[:2]])
 		likelihood_sente = math.exp(prob_)
 		print("Likelihood for getting "+sent+" is: ", likelihood_sente)
 
 data = ("he is from the east .", "she is from the east .", 
 	"he is from the west .", "she is from the west .")
-using_lang_model(data)
 
-
-
+#using_lang_model(data)
 #test_my_idea()
+#exercise_1()
+
+files = ['text_acad.txt', 'text_blog.txt', 'text_fic.txt', 'text_mag.txt', 'text_news.txt', 'text_spok.txt', 'text_tvm.txt', 'text_web.txt']
+merge_files(files)
+language_model()
