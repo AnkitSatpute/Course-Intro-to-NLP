@@ -31,8 +31,7 @@ def exercise_1():
 
 def language_model():
 	with open("main_text_file.txt", encoding="utf8") as d1:
-		my_dict = defaultdict(lambda : 0)
-		my_3grams_count = defaultdict(lambda : 0)
+		3gram_lang = defaultdict(lambda : 0)
 		assign_1 = d1.read().lower()
 		assign_1 = assign_1.replace('@','')
 		assign_1 = assign_1.replace('<p>','')
@@ -41,8 +40,23 @@ def language_model():
 		count_2grams = Counter(my_2_grams)
 		my_3_grams = ngrams(obj_1, 3)
 		count_3grams = Counter(my_3_grams)
-		print(len(count_3grams))
 
+		for ele in (count_3grams_1):
+			3gram_lang[ele] = count_3grams[ele]/count_2grams[ele[:2]]
+	return 3gram_lang
+
+def prob_sent(lang_model, sentence_):
+	for sent in sentence_:
+		sent_3grams = ngrams(sent.split(), 3)
+		prob_ = 0
+		for each_gram in sent_3grams:
+			prob_ += math.log((language_model[each_gram]))
+		likelihood_sente = math.exp(prob_)
+		print("Likelihood for getting "+sent+" is: ", likelihood_sente)
+
+
+def word_predict():
+	
 
 def merge_files(list_of_files):
 	with open('main_text_file.txt', 'w') as outfile:
@@ -122,6 +136,6 @@ data = ("he is from the east .", "she is from the east .",
 #test_my_idea()
 #exercise_1()
 
-files = ['text_acad.txt', 'text_blog.txt', 'text_fic.txt', 'text_mag.txt', 'text_news.txt', 'text_spok.txt', 'text_tvm.txt', 'text_web.txt']
-merge_files(files)
-language_model()
+#files = ['text_acad.txt', 'text_blog.txt', 'text_fic.txt', 'text_mag.txt', 'text_news.txt', 'text_spok.txt', 'text_tvm.txt', 'text_web.txt']
+#merge_files(files)
+#language_model()
