@@ -32,11 +32,12 @@ def scoring(pair):
 with BertClient(port=5555, port_out=5556, check_version=False) as bc:
     # doc_vecs = bc.encode(questions)
     # print('have reached here with questions: ', questions)
-    
-    from sentence_pairs import Pairs
+    from importlib import reload
+    import sentence_pairs
+    reload(sentence_pairs)
     print("Start testing")
     
-    for i, p in enumerate(Pairs):
+    for i, p in enumerate(sentence_pairs.Pairs):
         print("Similarity of Pair {}: ".format(i+1), scoring(p))
     
     
