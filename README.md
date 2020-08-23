@@ -1,1 +1,1 @@
-# Course-Assignments-Intro-to-NLP
+# Course-Intro-to-NLP
