@@ -1,8 +1,7 @@
 # Course-Intro-to-NLP
 
-Contents covered
-
+Contents covered:
 - NLP annotation
 - NLP Basics
-- Assignment on programmming and implementation
+- Assignment on programming and implementation
 - Nagging
