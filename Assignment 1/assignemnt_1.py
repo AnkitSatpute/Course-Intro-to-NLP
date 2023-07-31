@@ -55,6 +55,7 @@ def c_zipf_distribution(file_name, alpha):
 def descriptive_statistics(file_name):
 	with open(file_name, encoding="utf8") as g:
 		assign_1 = g.read().lower()
+		# print(assign_1)
 		tokenizer = RegexpTokenizer(r'\w+')
 		obj_1 = tokenizer.tokenize(assign_1)
 		x = Counter(obj_1)
