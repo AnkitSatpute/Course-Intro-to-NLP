@@ -5,3 +5,8 @@ Contents covered:
 - NLP Basics
 - Assignment on programming and implementation
 - Nagging
+
+# License
+
+Private
+All rights reserved.
