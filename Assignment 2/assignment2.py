@@ -1,5 +1,5 @@
 """
-Lab Class NLP: Words
+Lab Class NLP 2: Words
 Assignment 2
 Satpute, Ankit : Mtr. 120825
 Becker, Gabriel : Mtr. 120770
